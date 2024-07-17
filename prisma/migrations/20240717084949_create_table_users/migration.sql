@@ -4,7 +4,7 @@ CREATE TABLE `users` (
     `email` VARCHAR(100) NOT NULL,
     `username` VARCHAR(100) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
-    `refreshToken` VARCHAR(255) NOT NULL,
+    `refreshToken` VARCHAR(255) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
