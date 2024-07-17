@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { hello } from "../controllers/helloController.js";
+const { Router } = require("express");
+const hello = require("../controllers/helloController");
 
 const publicApi = Router();
 
 publicApi.get("/", hello);
 
-export { publicApi };
+module.exports = publicApi;

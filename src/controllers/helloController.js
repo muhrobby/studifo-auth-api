@@ -12,4 +12,4 @@ const hello = async (req, res, next) => {
   }
 };
 
-export { hello };
+module.exports = hello;
