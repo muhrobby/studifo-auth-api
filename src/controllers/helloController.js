@@ -2,7 +2,7 @@ const hello = async (req, res, next) => {
   try {
     res.status(200).json({
       status: "OK",
-      message: "Hello Word",
+      message: "Hello Word OK",
     });
   } catch (error) {
     res.status(400).json({
