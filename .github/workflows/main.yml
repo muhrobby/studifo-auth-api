@@ -21,7 +21,7 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: ${{ secrets.SERVER }}
-        username: ${{ secrets.USERNAME }}
+        server: ftp.studifo.com
+        username: robby@studifo.com
         password: ${{ secrets.KEY }}
-        server-dir: ${{ secrets.FOLDER }}
+        server-dir: auth-api.studifo.com/
