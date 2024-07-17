@@ -1,5 +1,5 @@
-import { app } from "./app.js";
-import { logger } from "./config/logger.js";
+import { app } from "./src/app.js";
+import { logger } from "./src/config/logger.js";
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
