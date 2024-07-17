@@ -1,3 +1,3 @@
-const { PrismaClient } = require("@prisma/client");
+// const { PrismaClient } = require("@prisma/client");
 
-exports.prisma = new PrismaClient();
+// exports.prisma = new PrismaClient();
