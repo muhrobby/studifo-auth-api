@@ -1,10 +1,39 @@
 // const { PrismaClient } = require("@prisma/client");
 
-const { Sequelize } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
+const logger = require("./logger");
 
 // exports.prisma = new PrismaClient();
 
-exports.sequelize = new Sequelize("studifo_auth_db", "root", "", {
-  dialect: "mysql",
+const db = new Sequelize("studifo_auth_db", "root", "", {
   host: "localhost",
+  dialect: "mysql",
+  logging: (msg) => logger.info(msg),
 });
+
+const User = db.define(
+  "users",
+  {
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    refreshToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+  },
+  {
+    freezeTableName: true,
+  }
+);
+
+module.exports = { db, User };

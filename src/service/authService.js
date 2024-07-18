@@ -1,41 +1,36 @@
-// const { prisma } = require("../config/database");
-// const bcrypt = require("bcryptjs");
-// const responseError = require("../errors/responseError");
-// const { registerValidation } = require("../validation/authValidation");
-// const { validate } = require("../validation/validation");
+const { User } = require("../config/database");
+const logger = require("../config/logger");
+const responseError = require("../errors/responseError");
+const { registerValidation } = require("../validation/authValidation");
+const { validate } = require("../validation/validation");
+const bcrypt = require("bcryptjs");
 
 const register = async (request) => {
-  //   validate(registerValidation, request);
+  const user = validate(registerValidation, request);
 
-  //   const count = await prisma.user.count({
-  //     where: {
-  //       email: request.email,
-  //     },
-  //   });
+  const count = await User.count({ where: { email: request.email } });
+  logger.info(count);
 
-  //   if (count == 1) {
-  //     throw new responseError(400, "Email Already Exist");
-  //   }
+  if (count === 1) {
+    throw new responseError(400, "Email already exist");
+  }
 
-  //   if (request.password !== request.passwordConfirm) {
-  //     throw new responseError(400, "Password do not match");
-  //   }
+  if (request.password !== request.passwordConfirm) {
+    throw new responseError(400, "Password do not match");
+  }
 
-  //   request.password = bcrypt.hashSync(request.password, 14);
+  user.password = bcrypt.hashSync(user.password, 14);
 
-  //   return prisma.user.create({
-  //     data: {
-  //       email: request.email,
-  //       username: request.username,
-  //       password: request.password,
-  //     },
-  //     select: {
-  //       email: true,
-  //       username: true,
-  //     },
-  //   });
+  const newUser = await User.create({
+    email: user.email,
+    username: user.username,
+    password: user.password,
+  });
 
-  return request;
+  return {
+    email: newUser.email,
+    username: newUser.username,
+  };
 };
 
 module.exports = { register };
