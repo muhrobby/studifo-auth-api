@@ -2,12 +2,11 @@
 
 const { Sequelize, DataTypes } = require("sequelize");
 const logger = require("./logger");
+const dotenv = require("dotenv");
 
 // exports.prisma = new PrismaClient();
-
-const db = new Sequelize("studifo_auth_db", "root", "", {
-  host: "localhost",
-  dialect: "mysql",
+dotenv.config();
+const db = new Sequelize(process.env.DATABASE_URL, {
   logging: (msg) => logger.info(msg),
 });
 
