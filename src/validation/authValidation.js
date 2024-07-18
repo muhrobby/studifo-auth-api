@@ -6,3 +6,8 @@ exports.registerValidation = Joi.object({
   password: Joi.string().required(),
   passwordConfirm: Joi.string().required(),
 });
+
+exports.loginValidation = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+});

@@ -1,9 +1,13 @@
 const { User } = require("../config/database");
 const logger = require("../config/logger");
 const responseError = require("../errors/responseError");
-const { registerValidation } = require("../validation/authValidation");
+const {
+  registerValidation,
+  loginValidation,
+} = require("../validation/authValidation");
 const { validate } = require("../validation/validation");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const register = async (request) => {
   const user = validate(registerValidation, request);
@@ -33,4 +37,50 @@ const register = async (request) => {
   };
 };
 
-module.exports = { register };
+const login = async (request) => {
+  const userLogin = validate(loginValidation, request);
+
+  const user = await User.findOne({
+    where: {
+      email: userLogin.email,
+    },
+  });
+
+  if (!user) {
+    throw new responseError(401, "Email or password Invalid");
+  }
+
+  const password = bcrypt.compareSync(userLogin.password, user.password);
+
+  if (!password) {
+    throw new responseError(401, "Email or password Invalid");
+  }
+
+  const token = jwt.sign(
+    {
+      email: user.email,
+      username: user.username,
+      id: user.id,
+    },
+    process.env.SECRET_KEY,
+    {
+      expiresIn: "1d",
+    }
+  );
+  await User.update(
+    {
+      refreshToken: token,
+    },
+    {
+      where: {
+        email: user.email,
+      },
+    }
+  );
+
+  return {
+    token: token,
+  };
+};
+
+module.exports = { register, login };
