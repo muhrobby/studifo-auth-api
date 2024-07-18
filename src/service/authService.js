@@ -4,6 +4,7 @@ const responseError = require("../errors/responseError");
 const {
   registerValidation,
   loginValidation,
+  logoutValidation,
 } = require("../validation/authValidation");
 const { validate } = require("../validation/validation");
 const bcrypt = require("bcryptjs");
@@ -83,4 +84,19 @@ const login = async (request) => {
   };
 };
 
-module.exports = { register, login };
+const logout = async (request) => {
+  const userLogout = validate(logoutValidation, request);
+
+  await User.update(
+    {
+      refreshToken: null,
+    },
+    {
+      where: {
+        email: userLogout.email,
+      },
+    }
+  );
+};
+
+module.exports = { register, login, logout };
