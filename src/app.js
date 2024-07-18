@@ -4,6 +4,7 @@ const publicApi = require("./routes/publicApi");
 const { errorMiddleware } = require("./middleware/errorMiddleware");
 const logger = require("./config/logger");
 const { db, User } = require("./config/database");
+const authApi = require("./routes/authApi");
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ const app = express();
 
 app.use(express.json());
 app.use(publicApi);
+app.use(authApi);
 
 app.use(errorMiddleware);
 
