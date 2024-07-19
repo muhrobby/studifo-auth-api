@@ -5,6 +5,7 @@ const {
   registerValidation,
   loginValidation,
   logoutValidation,
+  userValidation,
 } = require("../validation/authValidation");
 const { validate } = require("../validation/validation");
 const bcrypt = require("bcryptjs");
@@ -99,4 +100,23 @@ const logout = async (request) => {
   );
 };
 
-module.exports = { register, login, logout };
+const getUserId = async (request) => {
+  const userId = validate(userValidation, request);
+
+  const user = await User.findOne({
+    where: {
+      id: userId.id,
+    },
+  });
+
+  if (!user) {
+    throw new responseError(402, "User not found");
+  }
+
+  return {
+    email: user.email,
+    username: user.username,
+  };
+};
+
+module.exports = { register, login, logout, getUserId };
