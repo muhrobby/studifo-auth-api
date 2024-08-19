@@ -114,6 +114,7 @@ const getUserId = async (request) => {
   }
 
   return {
+    id: user.id,
     email: user.email,
     username: user.username,
   };
